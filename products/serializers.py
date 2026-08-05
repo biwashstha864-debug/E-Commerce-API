@@ -6,8 +6,31 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields  ="__all__"
         
-class ProductSerializer(serializers.ModelSerializer):
+
+class ProductWriteSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = Product
+        fields = [
+            "name",
+            "description",
+            "price",
+            "stock",
+            "category",
+        ]
+        
+class ProductReadSerializer(serializers.ModelSerializer):
+    
+    category = CategorySerializer(read_only = True)
+     
     class Meta:
         model = Product
-        fields  ="__all__"
+        fields = [
+            "name",
+            "description",
+            "price",
+            "stock",
+            "category",
+            "created_at",
+            "updated_at",
+    ]
         
