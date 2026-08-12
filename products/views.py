@@ -6,6 +6,8 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from .filters import ProductFilter
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.shortcuts import get_object_or_404
+from accounts.permissions import IsAdmin
+from rest_framework.permissions import AllowAny
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
@@ -21,7 +23,6 @@ class ProductViewSet(viewsets.ModelViewSet):
         SearchFilter,
         OrderingFilter
     ]
-
     filterset_class= ProductFilter
     search_fields = ["name"]
     ordering_fields = [
@@ -36,7 +37,17 @@ class ProductViewSet(viewsets.ModelViewSet):
             return ProductReadSerializer
 
         return ProductWriteSerializer
-
+    
+    def get_permissions(self):
+        if self.action in[
+            "list",
+            "retrieve",
+        ]:
+            return ([AllowAny()])
+        
+        else:
+            return([IsAdmin()])
+        
 class ProductImageViewSet(viewsets.ModelViewSet):
     serializer_class = ProductImageSerializer
     parser_classes = [MultiPartParser,FormParser]

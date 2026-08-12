@@ -7,7 +7,7 @@ router = DefaultRouter()
 
 router.register(
     "categories",
-    CategoryViewSet
+    CategoryViewSet 
 )
 router.register(
     "products",
