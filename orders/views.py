@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from drf_spectacular.utils import extend_schema
 
 from cart.models import Cart
 from .models import Order, OrderItem
@@ -14,7 +15,14 @@ from .serializers import OrderSerializer
 
 class CheckoutView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
+    @extend_schema(
+        summary="Checkout cart",
+        description=(
+            "Creates an order from the authenticated "
+            "user's cart and clears the cart."
+        )
+)
     @transaction.atomic
     def post(self, request):
 

@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 
 from .models import Cart, CartItem
 from .serializers import CartSerializer, CartItemSerializer
@@ -10,7 +11,14 @@ from .serializers import CartSerializer, CartItemSerializer
 
 class CartView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
+    @extend_schema(
+    summary="Get current user's cart",
+    description=(
+        "Returns the shopping cart belonging "
+        "to the authenticated user."
+    )
+)
     def get(self, request):
         cart, created = Cart.objects.get_or_create(
             user=request.user
@@ -23,7 +31,14 @@ class CartView(APIView):
 
 class CartItemView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
+    @extend_schema(
+    summary="Checkout cart",
+    description=(
+        "Creates an order from the authenticated "
+        "user's cart and clears the cart."
+    )
+)
     def post(self, request):
         serializer = CartItemSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
