@@ -11,7 +11,6 @@ class UserAdmin(BaseUserAdmin):
         "email",
         "first_name",
         "last_name",
-        "username",
         "role",
         "is_staff",
         "is_active",
@@ -19,5 +18,6 @@ class UserAdmin(BaseUserAdmin):
 
     search_fields = [
         "email",
-        "username",
     ]
+    
+    ordering = ("email",)

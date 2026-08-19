@@ -7,6 +7,7 @@ class User(AbstractUser):
         ADMIN  = "ADMIN","Admin"
         CUSTOMER = "CUSTOMER","Customer"
          
+    username = None
     email = models.EmailField(unique=True)
     role = models.CharField(
         max_length = 20,
